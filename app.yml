@@ -1,0 +1,50 @@
+version: 2
+
+name: ZELIS_CLAIM_TO_CASH
+database: ZELIS_C2C
+schema: APP
+query_warehouse: ZELIS_C2C_WH
+
+label: "Zelis Claim-to-Cash"
+description: "Same-day claim pricing, payment integrity and payment release: deterministic straight-through processing with Cortex Agents working the exception queue under human approval."
+icon: public/icon.svg
+
+ignore:
+  - node_modules
+  - .env*
+  - __pycache__
+  - "*.pyc"
+  - .next
+  - .git
+  - snowflake.log
+  - "*.tsbuildinfo"
+  - coverage
+  - output
+  - datagen
+  - evals/out
+  - out
+  - sql
+
+install:
+  commands:
+    - ["npm", "ci", "--include=dev"]
+
+build:
+  commands:
+    - ["npm", "run", "build"]
+    # Standalone mode: copy static assets next to the server bundle
+    - ["cp", "-r", ".next/static", ".next/standalone/.next/static"]
+    - ["cp", "-r", "public", ".next/standalone/public"]
+    # Standalone output bundles its own node_modules
+    - ["rm", "-rf", "node_modules"]
+
+run:
+  command: ["node", ".next/standalone/server.js"]
+
+environment_variables:
+  - name: C2C_DB
+    value: "ZELIS_C2C"
+  - name: C2C_AGENT_MODEL
+    value: "claude-sonnet-5"
+  - name: C2C_FAST_MODEL
+    value: "claude-haiku-5-5"

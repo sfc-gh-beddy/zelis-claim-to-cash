@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+output/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+snowflake.log
+.env*
+!.env.example
+datagen/out/
+datagen/.venv/
+evals/out/
+__pycache__/
+*.pyc
+.DS_Store
